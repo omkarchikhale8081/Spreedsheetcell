@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Responsive Grid with Autosave</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        /* Optional: Add custom styles here */
+        
+        .grid-container {
+            height: 80vh;
+            width: 80vw;
+            overflow: auto;
+        }
+        
+        .grid-item {
+            width: 100px;
+            height: 30px;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+
+    <div class="grid-container" id="grid">
+        <!-- Cells will be injected here by JavaScript -->
+    </div>
+
+    <script>
+        // Initialize the grid with 10,000 cells
+        const cellCount = 1000;
+        const gridElement = document.getElementById('grid');
+
+        // Create the grid structure
+        function createGrid() {
+            for (let i = 0; i < cellCount; i++) {
+                const input = document.createElement('input');
+                input.type = 'text';
+                input.placeholder = `Cell ${i + 1}`;
+                input.className = 'border p-2 grid-item';
+
+                // Load saved data if available
+                const savedValue = localStorage.getItem(`cell-${i}`);
+                if (savedValue) {
+                    input.value = savedValue;
+                }
+
+                // Handle input changes
+                input.addEventListener('input', (e) => {
+                    handleCellChange(i, e.target.value);
+                });
+
+                gridElement.appendChild(input);
+            }
+        }
+
+        // Handle cell change and save to local storage
+        function handleCellChange(index, value) {
+            localStorage.setItem(`cell-${index}`, value);
+            console.log(`Saving cell ${index + 1}: ${value}`);
+        }
+
+        // Create the grid on page load
+        createGrid();
+    </script>
+
+</body>
+
+</html>
